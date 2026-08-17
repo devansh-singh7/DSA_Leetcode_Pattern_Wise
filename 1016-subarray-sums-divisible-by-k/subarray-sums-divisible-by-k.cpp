@@ -1,39 +1,26 @@
-#include <vector>
-#include <unordered_map>
-
 class Solution {
 public:
-    int subarraysDivByK(std::vector<int>& nums, int k) {
-        
-        // Map to store remainder frequencies (remainder -> count)
-        unordered_map<int, int> remainderCount;
-        
-        // Base case: A prefix sum of 0 has a remainder of 0 once
-        remainderCount[0] = 1;
-        
-        int prefixSum = 0;
-        int count = 0;
-        
-        for (int num : nums) {
-            prefixSum += num;
+    int subarraysDivByK(vector<int>& nums, int k) {
+        int n = nums.size();
+        int ans = 0;
+        int sum = 0;
+        unordered_map<int, int> f;
+        f[0] = 1;  // Initially sum = 0, So hasmap have a value of 0 -> 1. 
+        // Like zero is present their.
+
+        for(int i = 0; i < n; i++) {
+            sum += nums[i];
+            int rem = sum % k;
             
-            // Calculate remainder with k
-            int remainder = prefixSum % k;
-            
-            // Handle negative remainders in C++ / Java
-            if (remainder < 0) {
-                remainder += k;
+            // Handle negative remainders
+            if(rem < 0) {
+                rem = rem + k;
             }
             
-            // If this remainder has been seen before, add its frequency to total count
-            if (remainderCount.find(remainder) != remainderCount.end()) {
-                count += remainderCount[remainder];
-            }
-            
-            // Increment frequency of current remainder
-            remainderCount[remainder]++;
+            ans += f[rem];
+            f[rem]++;
         }
         
-        return count;
+        return ans;
     }
 };
