@@ -14,7 +14,39 @@ Input: start[] = [2, 9, 6], end[] = [4, 12, 10]
 Output: 2
 Explanation: 1st and 2nd meetings at one room but for 3rd meeting one another room required.
 
-
 Constraints:
 1 ≤ start.size() = end.size() ≤ 105
 0 ≤ start[i] < end[i] ≤ 106
+
+
+Solution:
+
+class Solution {
+  public:
+    int minMeetingRooms(vector<int> &start, vector<int> &end) {
+        // code here
+        int n = start.size();
+        sort(start.begin(), start.end());
+        sort(end.begin(), end.end());
+        int room = 0;
+        int res = 0;
+        int i = 0, j = 0;
+        
+        while(i < n && j < n)
+        {
+            if(start[i] < end[j])
+            {
+                room++;
+                res = max(res, room);
+                i++;
+            }
+            else
+            {
+                room--;
+                j++;
+            }
+        }
+        
+        return res;
+    }
+};
